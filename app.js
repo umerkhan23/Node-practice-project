@@ -12,11 +12,14 @@ app.use("/api/users", UserRoutes);
 mongoose
   .connect(process.env.MONGODB_URL)
   .then(() => {
-    console.log("Connected to MongoDB");
+    const PORT = process.env.PORT;
+    app.listen(
+      PORT,
+      console.log(
+        `MongoDb Connected Successfully and Server started on port ${PORT}`
+      )
+    );
   })
   .catch((error) => {
     console.log("Error: ", error.message);
   });
-
-const PORT = process.env.PORT;
-app.listen(PORT, console.log(`Server started on port ${PORT}`));
