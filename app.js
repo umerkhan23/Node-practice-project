@@ -2,9 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const app = express();
 require("dotenv").config();
-const UserRoutes = require("./routes/userRoutes");
-const apiLogMiddleware = require("./middlewares/apiLoggerMiddleware");
-require("./configs/db");
+const UserRoutes = require("./src/routes/userRoutes");
+const apiLogMiddleware = require("./src/middlewares/apiLoggerMiddleware");
+require("./src/configs/db");
 
 app.use(express.json());
 app.use(cors());
