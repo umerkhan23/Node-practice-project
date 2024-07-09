@@ -3,6 +3,11 @@ const User = require("../models/usersModel");
 const schedule = require("node-schedule");
 const EncryptData = require("../utils/encrypt");
 const DecryptData = require("../utils/decrypt");
+const {
+  createUserSchema,
+  updateUserSchema,
+  getUserSchema,
+} = require("../validations/usersValidation");
 
 const getUsers = async (req, res) => {
   try {
@@ -25,6 +30,10 @@ const getUsers = async (req, res) => {
 
 const getUser = async (req, res) => {
   try {
+    const validate = getUserSchema.validate(req.params);
+    if (validate.error) {
+      return res.status(400).send(validate.error.details[0].message);
+    }
     const user = await User.findById(req.params.id);
     user.name = DecryptData(user.name);
     user.email = DecryptData(user.email);
@@ -41,6 +50,10 @@ const getUser = async (req, res) => {
 };
 
 const createUser = async (req, res) => {
+  const validate = createUserSchema.validate(req.body);
+  if (validate.error) {
+    return res.status(400).send(validate.error.details[0].message);
+  }
   const user = req.body;
   const encryptedName = EncryptData(user.name);
   const encryptedEmail = EncryptData(user.email);
@@ -65,6 +78,10 @@ const createUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
+  const validate = updateUserSchema.validate(req.body);
+  if (validate.error) {
+    return res.status(400).send(validate.error.details[0].message);
+  }
   const { id: _id } = req.params;
   const user = req.body;
   const encryptedName = EncryptData(user.name);

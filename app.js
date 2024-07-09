@@ -1,25 +1,15 @@
 const express = require("express");
 const cors = require("cors");
 const app = express();
-const mongoose = require("mongoose");
 require("dotenv").config();
 const UserRoutes = require("./routes/userRoutes");
+const apiLogMiddleware = require("./middlewares/apiLoggerMiddleware");
+require("./configs/db");
 
 app.use(express.json());
 app.use(cors());
+app.use(apiLogMiddleware);
 app.use("/api/users", UserRoutes);
 
-mongoose
-  .connect(process.env.MONGODB_URL)
-  .then(() => {
-    const PORT = process.env.PORT;
-    app.listen(
-      PORT,
-      console.log(
-        `MongoDb Connected Successfully and Server started on port ${PORT}`
-      )
-    );
-  })
-  .catch((error) => {
-    console.log("Error: ", error.message);
-  });
+const PORT = process.env.PORT;
+app.listen(PORT, console.log(`Server started on port ${PORT}`));
