@@ -4,6 +4,7 @@ const { createLog } = require("../controllers/apiLogController");
 const apiLogMiddleware = asyncHandler(async (req, res, next) => {
   if (req.url.startsWith(`/api/users`)) {
     next();
+    return;
   }
   const { method, body, query, params, url } = req;
   const request = { body, query, params };

@@ -11,9 +11,19 @@ const createLog = async (url, method, request) => {
     requestType: method,
     request,
   });
-  return newLog.save();
+  return newLog;
+};
+
+const updateResponse = async (logId, message, data, statusCode) => {
+  const updatedLog = await ApiLog.findByIdAndUpdate(
+    logId,
+    { response: { message, data }, statusCode },
+    { new: true }
+  );
+  return updatedLog;
 };
 
 module.exports = {
   createLog,
+  updateResponse,
 };
